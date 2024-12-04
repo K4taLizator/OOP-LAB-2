@@ -41,19 +41,20 @@ def load_xml(file_path):
     return cities
 
 
-# Функция для поиска дублирующихся городов
+# Функция для поиска дублирующихся записей (город, улица, дом, этаж)
 def print_duplicates(cities):
-    city_names = [city['city'] for city in cities]
-
-    # Создаем словарь для подсчета дублирующихся городов
     duplicates = defaultdict(int)
-    for city in city_names:
-        duplicates[city] += 1
 
-    print("Дублирующиеся города и их количество:")
-    for city, count in duplicates.items():
-        if count > 1:  # Только города с повторениями
-            print(f"{city}: {count} раз(а)")
+    # Используем кортежи с полными данными для поиска дубликатов
+    for city in cities:
+        city_tuple = (city['city'], city['street'], city['house'], city['floor'])
+        duplicates[city_tuple] += 1
+
+    print("Дублирующиеся записи и их количество:")
+    for city_tuple, count in duplicates.items():
+        if count > 1:  # Только записи с повторениями
+            city, street, house, floor = city_tuple
+            print(f"{city}, {street}, дом {house}, этаж {floor}: {count} раз(а)")
 
 
 # Функция для статистики по этажам
